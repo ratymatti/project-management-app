@@ -14,6 +14,7 @@ export default function NewProjectButton({ children, ...props }: NewProjectButto
     } else {
         buttonStyles = "text-stone-800 hover:text-stone-500";
     }
+    
     return (
         <li>
             <button className={buttonStyles} {...props}>
