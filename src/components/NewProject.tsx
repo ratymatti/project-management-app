@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import Input from "./Input";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function NewProject() {
     const title = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -13,7 +14,7 @@ export default function NewProject() {
         const enteredDueDate = new Date(enteredDueDateString);
         
         const newProject = {
-            id: 
+            id: uuidv4(),
             title: enteredTitle,
             description: enteredDescription,
             date: enteredDueDate
