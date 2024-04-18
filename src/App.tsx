@@ -1,11 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
+import Sidebar from "./components/Sidebar";
+import NewProject from "./components/NewProject";
+import NoProjectSelected from "./components/NoProjectSelected";
+
+interface ProjectsState {
+    projects: string[];
+    selectedProjectId: string | null | undefined;
+}
 
 function App() {
-  return (
-    <>
-      <h1 className="my-8 text-center text-5xl font-bold">project manager</h1>
-    </>
-  );
+    const [projectsState, setProjectsState] = useState<ProjectsState>({
+        projects: [],
+        selectedProjectId: undefined
+    });
+
+    function handleStartAddProject() {
+        setProjectsState((prevState) => {
+            return {
+                ...prevState,
+                selectedProjectId: null
+            }
+        })
+    }
+
+    return (
+        <div className="flex gap-8 h-screen mt-10">
+            <Sidebar onStartAddProject={handleStartAddProject} />
+            {projectsState.selectedProjectId === null && <NewProject />}
+            {projectsState.selectedProjectId === undefined && <NoProjectSelected onStartAddProject={handleStartAddProject} />}
+        </div>
+    );
 }
 
 export default App;
