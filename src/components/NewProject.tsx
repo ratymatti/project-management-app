@@ -1,43 +1,62 @@
 import React, { useRef } from "react";
 import Input from "./Input";
-import { v4 as uuidv4 } from 'uuid';
+import { Project } from "../types/project";
+import Modal from "./Modal";
+import NewProjectButton from "./NewProjectButton";
+import NewProjectMenu from "./NewProjectMenu";
+import Container from "./Container";
+import { createNewProject, validateInputs } from "../utils/NewProjectUtils";
 
-export default function NewProject() {
+interface NewProjectProps {
+    addNewProject: (newProject: Project) => void;
+    cancelAddProject: () => void;
+}
+
+export default function NewProject({ addNewProject, cancelAddProject }: NewProjectProps) {
     const title = useRef() as React.MutableRefObject<HTMLInputElement>;
     const description = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
     const dueDate = useRef() as React.MutableRefObject<HTMLInputElement>;
 
-    function handleSave() {
+    const modal = useRef() as React.MutableRefObject<any>;
+
+    const [errorMessage, setErrorMessage] = React.useState<string>('');
+
+    function handleSave(): void {
         const enteredTitle = title.current.value;
         const enteredDescription = description.current.value;
         const enteredDueDateString = dueDate.current.value;
-        const enteredDueDate = new Date(enteredDueDateString);
-        
-        const newProject = {
-            id: uuidv4(),
-            title: enteredTitle,
-            description: enteredDescription,
-            date: enteredDueDate
+
+        const errorMessage = validateInputs({ enteredTitle, enteredDescription, enteredDueDateString });
+        if (errorMessage) {
+            setErrorMessage(errorMessage);
+            modal.current.open();
+            return;
         }
+
+        const newProject = createNewProject({ enteredTitle, enteredDescription, enteredDueDateString });
+        addNewProject(newProject);
     }
 
-
     return (
-        <div className="w-[35rem] mt-16">
-            <menu className="flex items-center justify-end gap-4 my-4">
-                <li>
-                    <button className="text-stone-800 hover:text-stone950">Cancel</button>
-                </li>
-                <li>
-                    <button onClick={handleSave} className="px-6 py-2 rounded-md bg-stone-800 text-stone-50 hover:bg-stone-950">Save</button>
-                </li>
-            </menu>
-
-            <div>
-                <Input ref={title} label="Project Name" />
-                <Input ref={description} label="Description" textarea />
-                <Input ref={dueDate} label="Due Date" type="date" />
-            </div>
-        </div>
+        <>
+            <Modal ref={modal}>
+                {errorMessage}
+            </Modal>
+            <Container className="w-[35rem] mt-16">
+                <NewProjectMenu>
+                    <NewProjectButton onClick={cancelAddProject}>
+                        Cancel
+                    </NewProjectButton>
+                    <NewProjectButton onClick={handleSave}>
+                        Save
+                    </NewProjectButton>
+                </NewProjectMenu>
+                <Container>
+                    <Input ref={title} label="Project Name" />
+                    <Input ref={description} label="Description" textarea />
+                    <Input ref={dueDate} label="Due Date" type="date" />
+                </Container>
+            </Container>
+        </>
     )
 }
