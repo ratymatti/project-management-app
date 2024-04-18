@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import NewProject from "./components/NewProject";
 import NoProjectSelected from "./components/NoProjectSelected";
+import { Project } from "./types/project";
 
 interface ProjectsState {
-    projects: string[];
+    projects: Project[];
     selectedProjectId: string | null | undefined;
 }
 
@@ -19,6 +20,15 @@ function App() {
             return {
                 ...prevState,
                 selectedProjectId: null
+            }
+        })
+    }
+
+    function handleAddProject(newProject: Project) {
+        setProjectsState(prevState => {
+            return {
+                ...prevState,
+                projects: [...prevState.projects, newProject]
             }
         })
     }

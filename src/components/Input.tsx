@@ -1,4 +1,4 @@
-import React from "react"
+import React, { forwardRef, useImperativeHandle, useRef } from "react"
 
 interface InputProps {
     label: string
@@ -7,15 +7,31 @@ interface InputProps {
     placeholder?: string
 }
 
-export default function Input({ label, textarea, ...props }: InputProps) {
+type Ref = HTMLInputElement | HTMLTextAreaElement;
+
+const Input = forwardRef<Ref, InputProps>(function Input({ label, textarea, type = 'text', ...props }, ref) {
+    const inputRef = useRef<HTMLInputElement>(null);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    useImperativeHandle(ref, () => {
+        if (textarea && textareaRef.current) {
+            return textareaRef.current;
+        } else if (!textarea && inputRef.current) {
+            return inputRef.current;
+        }
+        throw new Error('Ref is null');
+    });
+
     const styles = "w-full p-1 border-b-2 rounded border-stone-300 bg-stone-200 text-stone-600 focus:outline-none focus:border-stone-600";
 
     return (
         <p className="flex flex-col gap-1 my-4">
             <label className="text-sm font-bold uppercase text-stone-500">{label}</label>
             {textarea ?
-                <textarea className={styles} {...props} />
-                : <input className={styles} {...props} />}
+                <textarea ref={textareaRef} className={styles} {...props} />
+                : <input ref={inputRef} className={styles} type={type} {...props} />}
         </p>
     )
-}
+})
+
+export default Input;
