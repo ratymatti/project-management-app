@@ -27,8 +27,8 @@ const Modal = forwardRef<Ref, ModalProps>(function Modal({ children }, ref) {
 
     return createPortal(
         <dialog ref={dialog} className='backdrop:bg-stone-800/80 w-80 py-8 px-16 rounded-md'>
-            <h2 className='text-xl text-center text-stone-500 font-bold uppercase'>Invalid input</h2>
-            <p className='text-stone-400 text-center mt-2'>{children}</p>
+            <h2 className='text-xl text-center text-stone-600 font-bold uppercase'>Invalid input</h2>
+            <p className='text-stone-500 text-center mt-2'>{children}</p>
             <form className='text-center mt-6' method="dialog">
                 <Button>{'Close'}</Button>
             </form>
