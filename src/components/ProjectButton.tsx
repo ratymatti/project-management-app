@@ -1,6 +1,8 @@
 import React from 'react'
+import { ProjectID } from '../types/project'
 
 interface ProjectButtonProps {
+    onClick: (projectId: ProjectID) => void
     title: string
 }
 
