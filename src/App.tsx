@@ -6,22 +6,25 @@ import { Project, ProjectID } from "./types/project";
 import Container from "./components/Container";
 import SelectedProject from "./components/SelectedProject";
 
-interface ProjectsState {
+export interface ProjectsState {
     projects: Project[];
     selectedProjectId: ProjectID | null | undefined;
+    selectedProject: Project | null;
 }
 
 function App() {
     const [projectsState, setProjectsState] = useState<ProjectsState>({
         projects: [],
-        selectedProjectId: undefined // renders NoProjectSelected
+        selectedProjectId: undefined, // renders NoProjectSelected
+        selectedProject: null
     });
 
     function handleStartAddProject(): void {
         setProjectsState((prevState) => {
             return {
                 ...prevState,
-                selectedProjectId: null // renders NewProject
+                selectedProjectId: null, // renders NewProject
+                selectedProject: null // clears SelectedProject
             }
         });
     }
@@ -31,7 +34,8 @@ function App() {
             return {
                 ...prevState,
                 projects: [...prevState.projects, newProject],
-                selectedProjectId: undefined // renders NoProjectSelected
+                selectedProjectId: newProject.id, 
+                selectedProject: newProject // renders SelectedProject with newProject
             }
         });
     }
@@ -46,10 +50,25 @@ function App() {
     }
 
     function handleSelectProject(projectId: ProjectID): void {
+        const project = projectsState.projects.find(project => project.id === projectId);
+
         setProjectsState(prevState => {
             return {
                 ...prevState,
-                selectedProjectId: projectId
+                selectedProjectId: projectId,
+                selectedProject: project! // renders SelectedProject with project
+            }
+        });
+    }
+
+    function handleDeleteProject(projectId: ProjectID): void {
+        const updatedProjects = projectsState.projects.filter(project => project.id !== projectId);
+        setProjectsState(prevState => {
+            return {
+                ...prevState,
+                projects: updatedProjects,
+                selectedProjectId: undefined, // renders NoProjectSelected
+                selectedProject: null // clears SelectedProject
             }
         });
     }
@@ -59,16 +78,17 @@ function App() {
             <Sidebar
                 onStartAddProject={handleStartAddProject}
                 onSelectProject={handleSelectProject}
-                projects={projectsState.projects} />
+                projectsState={projectsState} />
             {projectsState.selectedProjectId === null &&
                 <NewProject
                     addNewProject={handleAddProject}
                     cancelAddProject={handleCancelAddProject} />}
             {projectsState.selectedProjectId === undefined &&
                 <NoProjectSelected onStartAddProject={handleStartAddProject} />}
-            {projectsState.selectedProjectId && 
+            {projectsState.selectedProject && 
                 <SelectedProject
-                    project={projectsState.projects.find(project => project.id === projectsState.selectedProjectId)!} />}   
+                    project={projectsState.selectedProject}
+                    onDeleteProject={handleDeleteProject} />}   
         </Container>
     );
 }

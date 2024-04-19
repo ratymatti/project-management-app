@@ -1,15 +1,17 @@
 import React from "react";
 import Button from "./Button";
-import { Project, ProjectID } from "../types/project";
+import { ProjectID } from "../types/project";
 import ProjectButton from "./ProjectButton";
+import { ProjectsState } from "../App";
 
 interface SidebarProps {
     onStartAddProject: () => void;
     onSelectProject: (projectId: ProjectID) => void;
-    projects: Project[];
+    projectsState: ProjectsState
 }
 
-export default function Sidebar({ onStartAddProject, onSelectProject, projects }: SidebarProps) {
+export default function Sidebar({ onStartAddProject, onSelectProject, projectsState }: SidebarProps) {
+    const { projects, selectedProjectId } = projectsState;
 
     return (
         <nav className="w-1/3 px-8 py-16 bg-stone-900 text-stone-50 md:w-72 rounded-r-xl">
@@ -20,12 +22,22 @@ export default function Sidebar({ onStartAddProject, onSelectProject, projects }
                 </Button>
             </div>
             <ul className="mt-4">
-                {projects.map(project => (
-                    <ProjectButton
-                        onClick={() => onSelectProject(project.id)}
-                        key={project.id}
-                        title={project.title} />
-                ))}
+                {projects.map(project => {
+                    const handleSelectProject = () => onSelectProject(project.id);
+
+                    let active = false;
+                    if (selectedProjectId === project.id) {
+                        active = true;
+                    }
+
+                    return (
+                        <ProjectButton
+                            onClick={handleSelectProject}
+                            key={project.id}
+                            title={project.title}
+                            active={active} />
+                    );
+                })}
             </ul>
         </nav>
     )

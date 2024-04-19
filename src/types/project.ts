@@ -6,3 +6,4 @@ export interface Project {
 }
 
 export type ProjectID = string;
+
