@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { Project, Task, TaskID } from '../types/project';
 import NewTask, { createNewTask } from './NewTask';
 import TaskElement from './TaskElement'

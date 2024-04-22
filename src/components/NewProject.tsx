@@ -10,7 +10,6 @@ import { NewProjectTypes, Project } from "../types/project";
 import ErrorModal from "./ErrorModal";
 import { useModal } from "../hooks/useModal";
 
-
 export default function NewProject(): JSX.Element {
     const {
         handleAddProject,
