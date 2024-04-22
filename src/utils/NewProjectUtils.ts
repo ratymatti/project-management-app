@@ -1,13 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Project } from "../types/project";
+import { NewProjectTypes, Project } from "../types/project";
 
-interface InputTypes {
-    enteredTitle: string;
-    enteredDescription: string;
-    enteredDueDateString: string;
-}
+export function validateInputs(newProject: NewProjectTypes): string | null {
+    const { enteredTitle, enteredDescription, enteredDueDateString } = newProject;
 
-export function validateInputs({ enteredTitle, enteredDescription, enteredDueDateString }: InputTypes): string | null {
     if (!enteredTitle || enteredTitle.trim().length === 0) {
         return 'Please enter a title';
     } else if (!enteredDescription || enteredDescription.trim().length === 0) {
@@ -18,8 +14,11 @@ export function validateInputs({ enteredTitle, enteredDescription, enteredDueDat
     return null;
 }
 
-export function createNewProject({ enteredTitle, enteredDescription, enteredDueDateString }: InputTypes): Project {
+export function createNewProject(newProject: NewProjectTypes): Project {
+    const { enteredTitle, enteredDescription, enteredDueDateString } = newProject;
+
     const enteredDueDate = new Date(enteredDueDateString);
+
     return {
         id: uuidv4(),
         title: enteredTitle,

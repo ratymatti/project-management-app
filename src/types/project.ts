@@ -8,6 +8,12 @@ export interface ProjectsState {
     selectedProject: Project | null;
 }
 
+export interface NewProjectTypes {
+    enteredTitle: string;
+    enteredDescription: string;
+    enteredDueDateString: string;
+}
+
 export interface Project {
     id: ProjectID
     title: string

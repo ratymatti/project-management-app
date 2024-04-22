@@ -6,6 +6,7 @@ import NewProjectMenu from "./NewProjectMenu";
 import Container from "./Container";
 import { createNewProject, validateInputs } from "../utils/NewProjectUtils";
 import { ProjectsContext, ProjectsContextType } from "../contexts/ProjectsContext";
+import { NewProjectTypes, Project } from "../types/project";
 
 
 export default function NewProject(): JSX.Element {
@@ -22,11 +23,18 @@ export default function NewProject(): JSX.Element {
     const [errorMessage, setErrorMessage] = React.useState<string>('');
 
     function handleSave(): void {
+        if (!title.current || !description.current || !dueDate.current) {
+            console.error('One or more input refs are null');
+            return;
+        }
+
         const enteredTitle = title.current.value;
         const enteredDescription = description.current.value;
         const enteredDueDateString = dueDate.current.value;
 
-        const errorMessage = validateInputs({ enteredTitle, enteredDescription, enteredDueDateString });
+        const newProject: NewProjectTypes = { enteredTitle, enteredDescription, enteredDueDateString };
+
+        const errorMessage = validateInputs(newProject);
         if (errorMessage) {
             setErrorMessage(errorMessage);
             if (modal.current) {
@@ -35,8 +43,8 @@ export default function NewProject(): JSX.Element {
             return;
         }
 
-        const newProject = createNewProject({ enteredTitle, enteredDescription, enteredDueDateString });
-        handleAddProject(newProject);
+        const createdProject: Project = createNewProject(newProject);
+        handleAddProject(createdProject);
     }
 
     return (
