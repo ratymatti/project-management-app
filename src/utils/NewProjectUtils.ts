@@ -24,6 +24,7 @@ export function createNewProject({ enteredTitle, enteredDescription, enteredDueD
         id: uuidv4(),
         title: enteredTitle,
         description: enteredDescription,
-        date: enteredDueDate
+        date: enteredDueDate,
+        tasks: []
     };
 }

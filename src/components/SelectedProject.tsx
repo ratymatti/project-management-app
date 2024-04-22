@@ -2,6 +2,8 @@ import React from 'react'
 import { Project } from '../types/project'
 import Button from './Button'
 import Container from './Container';
+import Tasks from './Tasks';
+import { v4 as uuidv4 } from 'uuid';
 
 interface SelectedProjectProps {
     project: Project
@@ -14,6 +16,20 @@ export default function SelectedProject({ project, onDeleteProject }: SelectedPr
         month: 'short',
         day: 'numeric'
     });
+
+    function updateProject(newTask: string) {
+        const updatedProject = {
+            ...project,
+            tasks: [
+                {
+                    id: uuidv4(),
+                    title: newTask,
+                    isCompleted: false
+                },
+                ...project.tasks,
+            ]
+        };
+    }
 
     return (
         <Container className='w-[35rem] mt-16'>
@@ -29,6 +45,7 @@ export default function SelectedProject({ project, onDeleteProject }: SelectedPr
                 <p className='mb-4 text-stone-400'>{formattedDate}</p>
                 <p className='text-stone-600 whitespace-pre-wrap'>{project.description}</p>
             </header>
+            <Tasks project={project} />
         </Container>
     )
 }

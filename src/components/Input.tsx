@@ -1,15 +1,17 @@
-import React, { forwardRef, useImperativeHandle, useRef } from "react"
+import React, { forwardRef, useImperativeHandle, useRef, ChangeEvent } from "react"
 
 interface InputProps {
-    label: string
+    label?: string
     textarea?: boolean
     type?: string
     placeholder?: string
+    onChange?: (event: ChangeEvent<HTMLInputElement>) => void
+    value?: string
 }
 
 type Ref = HTMLInputElement | HTMLTextAreaElement;
 
-const Input = forwardRef<Ref, InputProps>(function Input({ label, textarea, type = 'text', ...props }, ref) {
+const Input = forwardRef<Ref, InputProps>(function Input({ onChange, value, label, textarea, type = 'text', ...props }, ref) {
     const inputRef = useRef<HTMLInputElement>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -28,8 +30,17 @@ const Input = forwardRef<Ref, InputProps>(function Input({ label, textarea, type
         <p className="flex flex-col gap-1 my-4">
             <label className="text-sm font-bold uppercase text-stone-500">{label}</label>
             {textarea ?
-                <textarea ref={textareaRef} className={styles} {...props} />
-                : <input ref={inputRef} className={styles} type={type} {...props} />}
+                <textarea
+                    ref={textareaRef}
+                    className={styles}
+                    {...props} />
+                : <input
+                    ref={inputRef}
+                    onChange={onChange}
+                    value={value}
+                    className={styles}
+                    type={type}
+                    {...props} />}
         </p>
     )
 })

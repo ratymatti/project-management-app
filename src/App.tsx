@@ -5,6 +5,7 @@ import NoProjectSelected from "./components/NoProjectSelected";
 import { Project, ProjectID } from "./types/project";
 import Container from "./components/Container";
 import SelectedProject from "./components/SelectedProject";
+import { testProjects } from "./utils/testProjects";
 
 export interface ProjectsState {
     projects: Project[];
@@ -12,12 +13,14 @@ export interface ProjectsState {
     selectedProject: Project | null;
 }
 
+const initialProjectsState: ProjectsState = {
+    projects: testProjects,
+    selectedProjectId: undefined, // renders NoProjectSelected
+    selectedProject: null
+}
+
 function App() {
-    const [projectsState, setProjectsState] = useState<ProjectsState>({
-        projects: [],
-        selectedProjectId: undefined, // renders NoProjectSelected
-        selectedProject: null
-    });
+    const [projectsState, setProjectsState] = useState<ProjectsState>({...initialProjectsState});
 
     function handleStartAddProject(): void {
         setProjectsState((prevState) => {
