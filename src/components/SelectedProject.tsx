@@ -6,7 +6,12 @@ import { ProjectsContext, ProjectsContextType } from '../contexts/ProjectsContex
 import { Task } from '../types/project';
 
 export default function SelectedProject(): JSX.Element {
-    const { projectsState, handleDeleteProject, updateProject } = useContext(ProjectsContext) as ProjectsContextType;
+    const {
+        projectsState,
+        handleDeleteProject,
+        handleUpdateProject
+    } = useContext(ProjectsContext) as ProjectsContextType;
+    
     const { selectedProject } = projectsState;
 
     if (!selectedProject) {
@@ -26,7 +31,7 @@ export default function SelectedProject(): JSX.Element {
             ...selectedProject,
             tasks: tasks
         }
-        updateProject(updatedProject);
+        handleUpdateProject(updatedProject);
     }
 
     return (
