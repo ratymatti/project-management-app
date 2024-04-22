@@ -7,6 +7,7 @@ import Container from './Container';
 import ConfirmModal from './ConfirmModal';
 import Modal from './Modal';
 import Input from './Input';
+import { ModalType } from '../types/modal';
 
 interface TasksProps {
     project: Project;
@@ -14,7 +15,7 @@ interface TasksProps {
 }
 
 export default function Tasks({ project, updateProjectTasks }: TasksProps) {
-    const modal = useRef<{ open: () => void, close: () => void }>(null);
+    const modal = useRef<ModalType | null>(null);
 
     const anyTaskCompleted = project.tasks.some(task => task.isCompleted);
 

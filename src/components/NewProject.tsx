@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { MutableRefObject, useContext, useRef, useState } from "react";
 import Input from "./Input";
 import Modal from "./Modal";
 import NewProjectButton from "./NewProjectButton";
@@ -8,6 +8,7 @@ import { createNewProject, validateInputs } from "../utils/NewProjectUtils";
 import { ProjectsContext, ProjectsContextType } from "../contexts/ProjectsContext";
 import { NewProjectTypes, Project } from "../types/project";
 import ErrorModal from "./ErrorModal";
+import { ModalType } from "../types/modal";
 
 
 export default function NewProject(): JSX.Element {
@@ -16,12 +17,12 @@ export default function NewProject(): JSX.Element {
         handleCancelAddProject
     } = useContext(ProjectsContext) as ProjectsContextType;
 
-    const title = useRef() as React.MutableRefObject<HTMLInputElement>;
-    const description = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
-    const dueDate = useRef() as React.MutableRefObject<HTMLInputElement>;
-    const modal = useRef<{ open: () => void, close: () => void }>(null);
+    const title = useRef() as MutableRefObject<HTMLInputElement>;
+    const description = useRef() as MutableRefObject<HTMLTextAreaElement>;
+    const dueDate = useRef() as MutableRefObject<HTMLInputElement>;
+    const modal = useRef<ModalType | null>(null);
 
-    const [errorMessage, setErrorMessage] = React.useState<string>('');
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     function handleSave(): void {
         if (!title.current || !description.current || !dueDate.current) {

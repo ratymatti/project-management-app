@@ -6,6 +6,7 @@ import { ProjectsContext, ProjectsContextType } from '../contexts/ProjectsContex
 import { Task } from '../types/project';
 import Modal from './Modal';
 import ConfirmModal from './ConfirmModal';
+import { ModalType } from '../types/modal';
 
 export default function SelectedProject(): JSX.Element {
     const {
@@ -14,7 +15,7 @@ export default function SelectedProject(): JSX.Element {
         handleUpdateProject
     } = useContext(ProjectsContext) as ProjectsContextType;
 
-    const modal = useRef<{ open: () => void, close: () => void }>(null);
+    const modal = useRef<ModalType | null>(null);
 
     const { selectedProject } = projectsState;
 
