@@ -5,6 +5,7 @@ import Tasks from './Tasks';
 import { ProjectsContext, ProjectsContextType } from '../contexts/ProjectsContext';
 import { Task } from '../types/project';
 import Modal from './Modal';
+import ConfirmModal from './ConfirmModal';
 
 export default function SelectedProject(): JSX.Element {
     const {
@@ -13,7 +14,7 @@ export default function SelectedProject(): JSX.Element {
         handleUpdateProject
     } = useContext(ProjectsContext) as ProjectsContextType;
 
-    const modal = useRef<{ open: () => void }>(null);
+    const modal = useRef<{ open: () => void, close: () => void }>(null);
 
     const { selectedProject } = projectsState;
 
@@ -41,10 +42,14 @@ export default function SelectedProject(): JSX.Element {
         if (selectedProject) handleDeleteProject(selectedProject.id);
     }
 
+    function closeModal(): void {
+        if (modal.current) modal.current.close();
+    }
+
     return (
         <>
             <Modal ref={modal} onClick={confirmDeleteProject}>
-                {"Confirm delete project?"}
+                <ConfirmModal onConfirm={confirmDeleteProject} onCancel={closeModal} />
             </Modal>
             <Container className='w-[35rem] mt-16'>
                 <header className='pb-4 mb-4 border-b-2 border-stone-300'>

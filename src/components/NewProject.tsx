@@ -7,6 +7,7 @@ import Container from "./Container";
 import { createNewProject, validateInputs } from "../utils/NewProjectUtils";
 import { ProjectsContext, ProjectsContextType } from "../contexts/ProjectsContext";
 import { NewProjectTypes, Project } from "../types/project";
+import ErrorModal from "./ErrorModal";
 
 
 export default function NewProject(): JSX.Element {
@@ -18,7 +19,7 @@ export default function NewProject(): JSX.Element {
     const title = useRef() as React.MutableRefObject<HTMLInputElement>;
     const description = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
     const dueDate = useRef() as React.MutableRefObject<HTMLInputElement>;
-    const modal = useRef<{ open: () => void }>(null);
+    const modal = useRef<{ open: () => void, close: () => void }>(null);
 
     const [errorMessage, setErrorMessage] = React.useState<string>('');
 
@@ -47,10 +48,16 @@ export default function NewProject(): JSX.Element {
         handleAddProject(createdProject);
     }
 
+    function closeModal() {
+        if (modal.current) modal.current.close();
+    }
+
     return (
         <>
-            <Modal ref={modal} error >
-                {errorMessage}
+            <Modal ref={modal} >
+                <ErrorModal onClick={closeModal} >
+                    {errorMessage}
+                </ErrorModal>
             </Modal>
             <Container className="w-[35rem] mt-16">
                 <NewProjectMenu>
