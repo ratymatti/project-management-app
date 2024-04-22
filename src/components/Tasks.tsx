@@ -1,11 +1,12 @@
-import React, { useRef } from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import { Project, Task, TaskID } from '../types/project';
-import NewTask from './NewTask';
+import NewTask, { createNewTask } from './NewTask';
 import TaskElement from './TaskElement'
 import Button from './Button';
 import Container from './Container';
 import ConfirmModal from './ConfirmModal';
 import Modal from './Modal';
+import Input from './Input';
 
 interface TasksProps {
     project: Project;
@@ -17,10 +18,20 @@ export default function Tasks({ project, updateProjectTasks }: TasksProps) {
 
     const anyTaskCompleted = project.tasks.some(task => task.isCompleted);
 
-    function handleAddNewTask(task: Task): void {
+    const [newTaskDescription, setNewTaskDescription] = useState<string>('');
+
+    function handleChange(event: ChangeEvent<HTMLInputElement>) {
+        setNewTaskDescription(event.target.value);
+    }
+
+    function handleAddNewTask(): void {
+        if (newTaskDescription.trim() === '') return;
+
+        const newTask = createNewTask(newTaskDescription);
         const currentTasks = project.tasks;
-        const updatedTasks = [task, ...currentTasks];
+        const updatedTasks = [newTask, ...currentTasks];
         updateProjectTasks(updatedTasks);
+        setNewTaskDescription('');
     }
 
     function handleCheckTask(taskID: TaskID): void {
@@ -55,8 +66,10 @@ export default function Tasks({ project, updateProjectTasks }: TasksProps) {
             </Modal>
             <section className='pb-10'>
                 <h2 className='text-2xl font-bold text-stone-700 mb-4'>Tasks</h2>
-                <NewTask
-                    onAddTask={handleAddNewTask} />
+                <NewTask>
+                    <Input value={newTaskDescription} onChange={handleChange} />
+                    <Button onClick={handleAddNewTask}>Add Task</Button>
+                </NewTask>
                 {!project.tasks.length &&
                     <p className='text-stone-800 my-4'>This project does not have any tasks yet.</p>}
                 {project.tasks.length > 0 &&
@@ -75,6 +88,5 @@ export default function Tasks({ project, updateProjectTasks }: TasksProps) {
                 }
             </section>
         </>
-
     )
 }
