@@ -9,11 +9,13 @@ export default function SelectedProject(): JSX.Element {
     const { projectsState, handleDeleteProject, updateProject } = useContext(ProjectsContext) as ProjectsContextType;
     const { projects, selectedProjectID } = projectsState;
 
-    const selectedProject = projects.find(project => project.id === selectedProjectID);
-
-    if (!selectedProject) {
+    const project = projects.find(project => project.id === selectedProjectID);
+    if (!project) {
         return <Container>Project not found.</Container>
     }
+
+    const selectedProject = JSON.parse(JSON.stringify(project));
+    selectedProject.date = new Date(selectedProject.date);
 
     const formattedDate = selectedProject.date.toLocaleDateString('fi-FI', {
         year: 'numeric',

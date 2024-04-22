@@ -25,7 +25,7 @@ export default function NewTask({ onAddTask}: NewTaskProps) {
     }
 
     function handleAddTaskClick() {
-        if (!newTaskDescription.length) return;
+        if (newTaskDescription.trim() === '') return;
         const newTask = createNewTask(newTaskDescription);
         onAddTask(newTask);
         setNewTaskDescription('');
