@@ -1,23 +1,23 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import Input from "./Input";
-import { Project } from "../types/project";
 import Modal from "./Modal";
 import NewProjectButton from "./NewProjectButton";
 import NewProjectMenu from "./NewProjectMenu";
 import Container from "./Container";
 import { createNewProject, validateInputs } from "../utils/NewProjectUtils";
+import { ProjectsContext, ProjectsContextType } from "../contexts/ProjectsContext";
 
-interface NewProjectProps {
-    addNewProject: (newProject: Project) => void;
-    cancelAddProject: () => void;
-}
 
-export default function NewProject({ addNewProject, cancelAddProject }: NewProjectProps) {
+export default function NewProject(): JSX.Element {
+    const {
+        handleAddProject,
+        handleCancelAddProject
+    } = useContext(ProjectsContext) as ProjectsContextType;
+
     const title = useRef() as React.MutableRefObject<HTMLInputElement>;
     const description = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
     const dueDate = useRef() as React.MutableRefObject<HTMLInputElement>;
-
-    const modal = useRef() as React.MutableRefObject<any>;
+    const modal = useRef<{ open: () => void }>(null);
 
     const [errorMessage, setErrorMessage] = React.useState<string>('');
 
@@ -29,12 +29,14 @@ export default function NewProject({ addNewProject, cancelAddProject }: NewProje
         const errorMessage = validateInputs({ enteredTitle, enteredDescription, enteredDueDateString });
         if (errorMessage) {
             setErrorMessage(errorMessage);
-            modal.current.open();
+            if (modal.current) {
+                modal.current.open();
+            }
             return;
         }
 
         const newProject = createNewProject({ enteredTitle, enteredDescription, enteredDueDateString });
-        addNewProject(newProject);
+        handleAddProject(newProject);
     }
 
     return (
@@ -44,7 +46,7 @@ export default function NewProject({ addNewProject, cancelAddProject }: NewProje
             </Modal>
             <Container className="w-[35rem] mt-16">
                 <NewProjectMenu>
-                    <NewProjectButton onClick={cancelAddProject}>
+                    <NewProjectButton onClick={handleCancelAddProject}>
                         Cancel
                     </NewProjectButton>
                     <NewProjectButton onClick={handleSave}>
