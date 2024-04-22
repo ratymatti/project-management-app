@@ -51,7 +51,7 @@ export default function Tasks({ project, updateProjectTasks }: TasksProps) {
             <Modal ref={modal}>
                 <ConfirmModal onConfirm={confirmDeleteTasks} onCancel={closeModal} >
                     {"Confirm delete tasks?"}
-                </ConfirmModal>    
+                </ConfirmModal>
             </Modal>
             <section className='pb-10'>
                 <h2 className='text-2xl font-bold text-stone-700 mb-4'>Tasks</h2>
@@ -59,16 +59,20 @@ export default function Tasks({ project, updateProjectTasks }: TasksProps) {
                     onAddTask={handleAddNewTask} />
                 {!project.tasks.length &&
                     <p className='text-stone-800 my-4'>This project does not have any tasks yet.</p>}
-                <ul className='p-4 mt-8 rounded-md bg-stone-100'>
-                    {project.tasks.length > 0 && project.tasks.map(task => (
-                        <TaskElement key={task.id} task={task} handleCheckTask={handleCheckTask} />
-                    ))}
-                </ul>
-                <Container className='flex justify-end mt-4'>
-                    <Button disabled={!anyTaskCompleted} onClick={() => {if (modal.current) modal.current.open()}}>
-                        Delete Checked Tasks
-                    </Button>
-                </Container>
+                {project.tasks.length > 0 &&
+                    <>
+                        <ul className='p-4 mt-8 rounded-md bg-stone-100'>
+                            {project.tasks.length > 0 && project.tasks.map(task => (
+                                <TaskElement key={task.id} task={task} handleCheckTask={handleCheckTask} />
+                            ))}
+                        </ul>
+                        <Container className='flex justify-end mt-4'>
+                            <Button disabled={!anyTaskCompleted} onClick={() => { if (modal.current) modal.current.open() }}>
+                                Delete Checked Tasks
+                            </Button>
+                        </Container>
+                    </>
+                }
             </section>
         </>
 
