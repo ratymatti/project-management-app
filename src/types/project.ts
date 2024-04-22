@@ -1,3 +1,13 @@
+/**
+ * Project typings
+ */
+
+export interface ProjectsState {
+    projects: Project[];
+    selectedProjectID: ProjectID | null | undefined;
+    selectedProject: Project | null;
+}
+
 export interface Project {
     id: ProjectID
     title: string
