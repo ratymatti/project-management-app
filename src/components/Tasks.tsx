@@ -7,7 +7,7 @@ import Container from './Container';
 import ConfirmModal from './ConfirmModal';
 import Modal from './Modal';
 import Input from './Input';
-import { ModalType } from '../types/modal';
+import { useModal } from '../hooks/useModal';
 
 interface TasksProps {
     project: Project;
@@ -15,7 +15,7 @@ interface TasksProps {
 }
 
 export default function Tasks({ project, updateProjectTasks }: TasksProps) {
-    const modal = useRef<ModalType | null>(null);
+    const { modalRef, openModal, closeModal } = useModal();
 
     const anyTaskCompleted = project.tasks.some(task => task.isCompleted);
 
@@ -54,13 +54,9 @@ export default function Tasks({ project, updateProjectTasks }: TasksProps) {
         closeModal();
     }
 
-    function closeModal(): void {
-        if (modal.current) modal.current.close();
-    }
-
     return (
         <>
-            <Modal ref={modal}>
+            <Modal ref={modalRef}>
                 <ConfirmModal onConfirm={confirmDeleteTasks} onCancel={closeModal} >
                     {"Confirm delete tasks?"}
                 </ConfirmModal>
@@ -81,7 +77,7 @@ export default function Tasks({ project, updateProjectTasks }: TasksProps) {
                             ))}
                         </ul>
                         <Container className='flex justify-end mt-4'>
-                            <Button disabled={!anyTaskCompleted} onClick={() => { if (modal.current) modal.current.open() }}>
+                            <Button disabled={!anyTaskCompleted} onClick={openModal}>
                                 Delete Checked Tasks
                             </Button>
                         </Container>
