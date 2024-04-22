@@ -12,6 +12,8 @@ interface TasksProps {
 
 export default function Tasks({ project, updateProjectTasks }: TasksProps) {
 
+    const anyTaskCompleted = project.tasks.some(task => task.isCompleted);
+
     function handleAddNewTask(task: Task): void {
         const currentTasks = project.tasks;
         const updatedTasks = [task, ...currentTasks];
@@ -49,7 +51,7 @@ export default function Tasks({ project, updateProjectTasks }: TasksProps) {
                 ))}
             </ul>
             <Container className='flex justify-end mt-4'>
-                <Button onClick={handleDeleteCheckedTasks}>
+                <Button disabled={!anyTaskCompleted} onClick={handleDeleteCheckedTasks}>
                     Delete Checked Tasks
                 </Button>
             </Container>
