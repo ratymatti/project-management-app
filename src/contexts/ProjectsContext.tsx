@@ -49,7 +49,7 @@ export function ProjectsProvider({ children }: { children: ReactNode }): JSX.Ele
     }
 
     function handleSelectProject(projectId: ProjectID): void {
-        const project = projectsState.projects.find(project => project.id === projectId);
+        const project = deepCopyProject(projectId);
 
         setProjectsState((prevState: ProjectsState): ProjectsState => {
             return {
@@ -86,6 +86,17 @@ export function ProjectsProvider({ children }: { children: ReactNode }): JSX.Ele
                 selectedProject: updatedProject
             }
         });
+    }
+
+    function deepCopyProject(projectID: ProjectID): Project {
+        const project = projectsState.projects.find(project => project.id === projectID);
+        if (!project) {
+            throw new Error('Project not found');
+        }
+        const projectCopy = JSON.parse(JSON.stringify(project));
+        projectCopy.date = new Date(projectCopy.date);
+
+        return projectCopy;
     }
 
     return (
