@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useContext, useRef, useState } from "react";
+import React, { RefObject, useContext, useRef, useState } from "react";
 import Input from "./Input";
 import Modal from "./Modal";
 import NewProjectButton from "./NewProjectButton";
@@ -16,9 +16,9 @@ export default function NewProject(): JSX.Element {
         handleCancelAddProject
     } = useContext(ProjectsContext) as ProjectsContextType;
 
-    const title = useRef() as MutableRefObject<HTMLInputElement>;
-    const description = useRef() as MutableRefObject<HTMLTextAreaElement>;
-    const dueDate = useRef() as MutableRefObject<HTMLInputElement>;
+    const title = useRef() as RefObject<HTMLInputElement>;
+    const description = useRef() as RefObject<HTMLTextAreaElement>;
+    const dueDate = useRef() as RefObject<HTMLInputElement>;
     
     const { modalRef, openModal, closeModal } = useModal();
 
