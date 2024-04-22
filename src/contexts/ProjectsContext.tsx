@@ -1,5 +1,5 @@
 import React, { ReactNode, createContext, useState } from 'react'
-import { Project, ProjectID, ProjectsState } from '../types/project';
+import { Project, ProjectID, ProjectsState, Task } from '../types/project';
 
 import { initialProjectsState } from '../utils/initialProjectsState'
 
@@ -10,6 +10,7 @@ export interface ProjectsContextType {
     handleCancelAddProject: () => void;
     handleSelectProject: (projectId: ProjectID) => void;
     handleDeleteProject: (projectId: ProjectID) => void;
+    updateProject: (updatedProject: Project) => void;
 }
 
 export const ProjectsContext = createContext<ProjectsContextType | undefined>(undefined);
@@ -71,6 +72,22 @@ export function ProjectsProvider({ children }: { children: ReactNode }): JSX.Ele
         });
     }
 
+    function updateProject(updatedProject: Project): void {
+        setProjectsState((prevState: ProjectsState): ProjectsState => {
+            const updatedProjects = prevState.projects.map(project => {
+                if (project.id === updatedProject.id) {
+                    return updatedProject;
+                }
+                return project;
+            });
+            return {
+                ...prevState,
+                projects: updatedProjects,
+                selectedProject: updatedProject
+            }
+        });
+    }
+
     return (
         <ProjectsContext.Provider value={{
             projectsState,
@@ -78,7 +95,8 @@ export function ProjectsProvider({ children }: { children: ReactNode }): JSX.Ele
             handleAddProject,
             handleCancelAddProject,
             handleSelectProject,
-            handleDeleteProject
+            handleDeleteProject,
+            updateProject
         }}>
             {children}
         </ProjectsContext.Provider>

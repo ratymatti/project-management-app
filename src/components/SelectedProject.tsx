@@ -3,15 +3,16 @@ import Button from './Button'
 import Container from './Container';
 import Tasks from './Tasks';
 import { ProjectsContext, ProjectsContextType } from '../contexts/ProjectsContext';
+import { Task } from '../types/project';
 
 export default function SelectedProject(): JSX.Element {
-    const { projectsState, handleDeleteProject } = useContext(ProjectsContext) as ProjectsContextType;
+    const { projectsState, handleDeleteProject, updateProject } = useContext(ProjectsContext) as ProjectsContextType;
     const { projects, selectedProjectID } = projectsState;
 
     const selectedProject = projects.find(project => project.id === selectedProjectID);
 
     if (!selectedProject) {
-        throw new Error('Project not found');
+        return <Container>Project not found.</Container>
     }
 
     const formattedDate = selectedProject.date.toLocaleDateString('fi-FI', {
@@ -19,6 +20,16 @@ export default function SelectedProject(): JSX.Element {
         month: 'short',
         day: 'numeric'
     });
+
+    function handleUpdateProjectTasks(tasks: Task[]): void {
+        if (!selectedProject) return;
+
+        const updatedProject = {
+            ...selectedProject,
+            tasks: tasks
+        }
+        updateProject(updatedProject);
+    }
 
     return (
         <Container className='w-[35rem] mt-16'>
@@ -34,7 +45,9 @@ export default function SelectedProject(): JSX.Element {
                 <p className='mb-4 text-stone-400'>{formattedDate}</p>
                 <p className='text-stone-600 whitespace-pre-wrap'>{selectedProject.description}</p>
             </header>
-            <Tasks project={selectedProject} />
+            <Tasks
+                project={selectedProject}
+                updateProjectTasks={handleUpdateProjectTasks} />
         </Container>
     )
 }

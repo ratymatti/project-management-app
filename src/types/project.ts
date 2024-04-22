@@ -24,7 +24,6 @@ export interface Project {
 
 export interface Task {
     id: TaskID
-    title: string
     description: string
     isCompleted: boolean
 }
