@@ -11,6 +11,8 @@ export default function Button({ children, disabled, ...props }: ButtonProps) {
 
     if (disabled) {
         buttonStyles += " text-stone-400 bg-stone-300 hover:cursor-default"
+    } else if (children === "Yes" || children === "No") {
+        buttonStyles += " bg-stone-500 text-stone-200 hover:bg-stone-600 hover:text-stone-100 w-16"
     } else if (children === "Delete") {
         buttonStyles += " text-stone-200 bg-stone-500 hover:text-stone-100 hover:bg-stone-600"
     } else if (children === "Add Task" || children === "Delete Checked Tasks") {

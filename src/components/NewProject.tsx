@@ -49,7 +49,7 @@ export default function NewProject(): JSX.Element {
 
     return (
         <>
-            <Modal ref={modal}>
+            <Modal ref={modal} error >
                 {errorMessage}
             </Modal>
             <Container className="w-[35rem] mt-16">
