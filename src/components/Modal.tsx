@@ -6,11 +6,9 @@ type Ref = any;
 
 interface ModalProps {
     children: any
-    error?: boolean
-    onClick?: () => void
 }
 
-const Modal = forwardRef<Ref, ModalProps>(function Modal({ children, error, onClick }, ref) {
+const Modal = forwardRef<Ref, ModalProps>(function Modal({ children }, ref) {
     const modalRoot = document.getElementById('modal-root');
     if (!modalRoot) throw new Error('Modal root not found');
 

@@ -48,8 +48,10 @@ export default function SelectedProject(): JSX.Element {
 
     return (
         <>
-            <Modal ref={modal} onClick={confirmDeleteProject}>
-                <ConfirmModal onConfirm={confirmDeleteProject} onCancel={closeModal} />
+            <Modal ref={modal}>
+                <ConfirmModal onConfirm={confirmDeleteProject} onCancel={closeModal} >
+                    {"Confirm delete project?"}
+                </ConfirmModal>
             </Modal>
             <Container className='w-[35rem] mt-16'>
                 <header className='pb-4 mb-4 border-b-2 border-stone-300'>
@@ -57,7 +59,7 @@ export default function SelectedProject(): JSX.Element {
                         <h1 className='text-2xl font-bold text-stone-600 mb-2'>
                             {selectedProject.title}
                         </h1>
-                        <Button onClick={() => {if (modal.current) modal.current.open()}}>
+                        <Button onClick={() => { if (modal.current) modal.current.open() }}>
                             Delete
                         </Button>
                     </Container>
