@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom'
 type ModalRef = {
     open: () => void;
     close: () => void;
-}
+} | null;
 
 interface ModalProps {
     children: ReactNode;
@@ -14,7 +14,7 @@ const Modal = forwardRef<ModalRef, ModalProps>(function Modal({ children }, ref)
     const modalRoot = document.getElementById('modal-root');
     if (!modalRoot) throw new Error('Modal root not found');
 
-    const dialog = useRef<HTMLDialogElement>(null);
+    const dialog = useRef<HTMLDialogElement | null>(null);
 
     useImperativeHandle(ref, () => {
         if (dialog.current) {
