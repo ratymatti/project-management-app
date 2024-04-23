@@ -1,14 +1,16 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react'
+import React, { ReactNode, forwardRef, useImperativeHandle, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import Button from './Button';
 
-type Ref = any;
-
-interface ModalProps {
-    children: any
+type ModalRef = {
+    open: () => void;
+    close: () => void;
 }
 
-const Modal = forwardRef<Ref, ModalProps>(function Modal({ children }, ref) {
+interface ModalProps {
+    children: ReactNode;
+}
+
+const Modal = forwardRef<ModalRef, ModalProps>(function Modal({ children }, ref) {
     const modalRoot = document.getElementById('modal-root');
     if (!modalRoot) throw new Error('Modal root not found');
 
