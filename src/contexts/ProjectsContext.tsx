@@ -1,5 +1,14 @@
-import React, { ReactNode, createContext, useState } from 'react'
-import { Project, ProjectID, ProjectsState } from '../types/project';
+import React, {
+    ReactNode,
+    createContext,
+    useState
+} from 'react'
+
+import {
+    Project,
+    ProjectID,
+    ProjectsState
+} from '../types/project';
 
 import { initialProjectsState } from '../utils/initialProjectsState'
 
@@ -99,16 +108,18 @@ export function ProjectsProvider({ children }: { children: ReactNode }): JSX.Ele
         return projectCopy;
     }
 
+    const values: ProjectsContextType = {
+        projectsState,
+        handleStartAddProject,
+        handleAddProject,
+        handleCancelAddProject,
+        handleSelectProject,
+        handleDeleteProject,
+        handleUpdateProject
+    };
+
     return (
-        <ProjectsContext.Provider value={{
-            projectsState,
-            handleStartAddProject,
-            handleAddProject,
-            handleCancelAddProject,
-            handleSelectProject,
-            handleDeleteProject,
-            handleUpdateProject
-        }}>
+        <ProjectsContext.Provider value={values}>
             {children}
         </ProjectsContext.Provider>
     )
