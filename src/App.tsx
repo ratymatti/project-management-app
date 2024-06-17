@@ -6,6 +6,9 @@ import Container from "./components/Container";
 import SelectedProject from "./components/SelectedProject";
 import { ProjectsContext, ProjectsContextType } from "./contexts/ProjectsContext";
 
+import "@copilotkit/react-ui/styles.css"; // add to the app-global css
+import { CopilotKit } from "@copilotkit/react-core";
+
 function App() {
     const projectsContext = useContext(ProjectsContext) as ProjectsContextType;
 
@@ -17,15 +20,17 @@ function App() {
     const { selectedProjectID, selectedProject } = projectsState;
 
     return (
-        <Container className="flex gap-8 h-screen mt-10">
-            <Sidebar />
-            {selectedProjectID === null &&
-                <NewProject />}
-            {selectedProjectID === undefined &&
-                <NoProjectSelected />}
-            {selectedProject &&
-                <SelectedProject />}
-        </Container>
+        <CopilotKit runtimeUrl="/api/copilotkit/chat">
+            <Container className="flex gap-8 h-screen mt-10">
+                <Sidebar />
+                {selectedProjectID === null &&
+                    <NewProject />}
+                {selectedProjectID === undefined &&
+                    <NoProjectSelected />}
+                {selectedProject &&
+                    <SelectedProject />}
+            </Container>
+        </CopilotKit>
     );
 }
 
