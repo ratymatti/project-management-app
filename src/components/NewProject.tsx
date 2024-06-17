@@ -9,6 +9,7 @@ import { ProjectsContext, ProjectsContextType } from "../contexts/ProjectsContex
 import { NewProjectTypes, Project } from "../types/project";
 import ErrorModal from "./ErrorModal";
 import { useModal } from "../hooks/useModal";
+import Textarea from "./Textarea";
 
 export default function NewProject(): JSX.Element {
     const {
@@ -65,7 +66,7 @@ export default function NewProject(): JSX.Element {
                 </NewProjectMenu>
                 <Container>
                     <Input ref={title} label="Project Name" />
-                    <Input ref={description} label="Description" textarea />
+                    <Textarea textareaRef={description} label="Description" />
                     <Input ref={dueDate} label="Due Date" type="date" />
                 </Container>
             </Container>
