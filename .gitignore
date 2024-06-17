@@ -25,3 +25,5 @@ dist-ssr
 
 # Ignore test projects
 *testProjects.ts
+
+.env
