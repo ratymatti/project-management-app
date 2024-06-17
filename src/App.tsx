@@ -19,8 +19,10 @@ function App() {
     const { projectsState } = projectsContext;
     const { selectedProjectID, selectedProject } = projectsState;
 
+    const apiKey = import.meta.env.VITE_OPEN_AI_API_KEY;
+
     return (
-        <CopilotKit runtimeUrl="/api/copilotkit/chat">
+        <CopilotKit publicApiKey={apiKey}>
             <Container className="flex gap-8 h-screen mt-10">
                 <Sidebar />
                 {selectedProjectID === null &&
