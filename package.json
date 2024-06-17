@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@copilotkit/react-core": "^0.37.0",
+    "@copilotkit/react-textarea": "^0.37.0",
+    "@copilotkit/react-ui": "^0.37.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "uuid": "^9.0.1"
