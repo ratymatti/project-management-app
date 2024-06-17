@@ -1,8 +1,9 @@
 import { CopilotTextarea } from '@copilotkit/react-textarea';
 import React, { useEffect, useState } from 'react'
+import { DescriptionRef } from './NewProject';
 
 interface TextareaProps {
-    textareaRef: React.RefObject<HTMLTextAreaElement>;
+    textareaRef: React.MutableRefObject<DescriptionRef>;
     label: string;
 }
 
@@ -10,8 +11,8 @@ export default function Textarea({ textareaRef, label }: TextareaProps) {
     const [text, setText] = useState<string>('');
 
     useEffect(() => {
-        if (textareaRef && textareaRef.current) {
-            textareaRef.current.value = text;
+        if (text && textareaRef.current) {
+            textareaRef.current.description = text;
         }
     }, [text]);
 

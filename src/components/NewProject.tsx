@@ -11,6 +11,14 @@ import ErrorModal from "./ErrorModal";
 import { useModal } from "../hooks/useModal";
 import Textarea from "./Textarea";
 
+export interface DescriptionRef {
+    description: string;
+}
+
+const initialValue = {
+    description: ''
+}
+
 export default function NewProject(): JSX.Element {
     const {
         handleAddProject,
@@ -18,7 +26,7 @@ export default function NewProject(): JSX.Element {
     } = useContext(ProjectsContext) as ProjectsContextType;
 
     const title = useRef() as RefObject<HTMLInputElement>;
-    const description = useRef() as RefObject<HTMLTextAreaElement>;
+    const description = useRef<DescriptionRef>(initialValue);
     const dueDate = useRef() as RefObject<HTMLInputElement>;
     
     const { modalRef, openModal, closeModal } = useModal();
@@ -26,13 +34,13 @@ export default function NewProject(): JSX.Element {
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     function handleSave(): void {
-        if (!title.current || !description.current || !dueDate.current) {
+        if (!title.current || description.current.description.trim() === "" || !dueDate.current) {
             console.error('One or more input refs are null');
             return;
         }
 
         const enteredTitle = title.current.value;
-        const enteredDescription = description.current.value;
+        const enteredDescription = description.current.description;
         const enteredDueDateString = dueDate.current.value;
 
         const newProject: NewProjectTypes = { enteredTitle, enteredDescription, enteredDueDateString };
